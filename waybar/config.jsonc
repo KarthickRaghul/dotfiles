@@ -1,0 +1,53 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["pulseaudio", "memory", "temperature", "cpu"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "network", "battery",
+    "bluetooth", "custom/power"
+  ],
+
+	"clock": {
+	  "format": "{:%I:%M %p}",
+	  "tooltip-format": "{:%Y-%m-%d %I:%M:%S %p}",
+    	"on-click": "kcmshell5 kcm_clock"
+	},
+  "pulseaudio": {
+    "format": "<span foreground='#F0C674'>{icon}</span> {volume}%",
+    "format-muted": "<span foreground='#F0C674'></span> Muted",
+    "on-click": "pavucontrol",
+    "format-icons": {
+      "default": ["", ""],
+      "muted": ""
+    }
+  },
+  "memory": {
+    "format": "<span foreground='#F0C674'></span> {used:0.1f}G"
+  },
+  "temperature": {
+    "format": "<span foreground='#F0C674'></span> {temperatureC}°C"
+  },
+  "cpu": {
+    "format": "<span foreground='#F0C674'></span> {usage}%"
+  },
+  "network": {
+    "format-wifi": "<span foreground='#F0C674'></span> 192.1.13.134",
+    "format-ethernet": "<span foreground='#7e6b47'></span> 192.1.13.134",
+    "format-disconnected": "⚠️ Disconnected",
+    "tooltip": true,
+    "on-click": "plasmawindowed org.kde.plasma.networkmanagement"
+  },
+  "bluetooth": {
+    "format": "<span foreground='#F0C674'></span> {status}",
+    "on-click": "blueman-manager"
+  },
+  "battery": {
+    "format": "<span foreground='#F0C674'>{icon}</span> {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "custom/power": {
+    "format": "<span foreground='#F0C674'>⏻</span>",
+    "tooltip": "System Monitor"
+  }
+}

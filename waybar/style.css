@@ -1,0 +1,18 @@
+* {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  padding: 0 10px;
+  min-height: 30px;
+  color: white;
+}
+
+window#waybar {
+  background-color: #000000;
+  border-radius: 0px;
+}
+
+
+/* Optional slight hover for others */
+#pulseaudio:hover, #clock:hover, #custom-power:hover {
+  background-color: rgba(126, 107, 71, 0.1); /* subtle gold hover */
+}
