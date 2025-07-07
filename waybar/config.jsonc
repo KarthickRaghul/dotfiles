@@ -3,10 +3,7 @@
   "position": "top",
   "modules-left": ["pulseaudio", "memory", "temperature", "cpu"],
   "modules-center": ["clock"],
-  "modules-right": [
-    "network", "battery",
-    "bluetooth", "custom/power"
-  ],
+  "modules-right": ["custom/ip", "battery","bluetooth", "custom/power"],
 
 	"clock": {
 	  "format": "{:%I:%M %p}",
@@ -42,12 +39,22 @@
     "format": "<span foreground='#F0C674'></span> {status}",
     "on-click": "blueman-manager"
   },
+"custom/ip": {
+  "exec": "~/.config/waybar/scripts/show-ip.sh",
+  "interval": 5,
+  "return-type": "text",
+  "tooltip": false,
+  "on-click": "plasmawindowed org.kde.plasma.networkmanagement"
+},
+
   "battery": {
     "format": "<span foreground='#F0C674'>{icon}</span> {capacity}%",
     "format-icons": ["", "", "", "", ""]
   },
-  "custom/power": {
-    "format": "<span foreground='#F0C674'>⏻</span>",
-    "tooltip": "System Monitor"
-  }
+"custom/power": {
+  "exec": "echo '<span foreground=\"#F0C674\">⏻</span>'",
+  "return-type": "text",
+  "tooltip": "Power Menu",
+  "on-click": "~/.config/waybar/scripts/power-button.sh"
+}
 }
