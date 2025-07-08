@@ -26,7 +26,7 @@
     "format": "<span foreground='#F0C674'></span> {temperatureC}°C"
   },
   "cpu": {
-    "format": "<span foreground='#F0C674'></span> {usage}%"
+    "format": "<span foreground='#F0C674'></span> {usage}%"
   },
   "network": {
     "format-wifi": "<span foreground='#F0C674'></span> 192.1.13.134",
