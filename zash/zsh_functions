@@ -1,0 +1,72 @@
+# -------- PYTHON ENVIRONMENT MANAGEMENT --------
+
+ENV_DIR="$HOME/env"
+
+av() {
+  if [[ ! -d "$ENV_DIR" ]]; then
+    echo "❌ No environment directory found in $ENV_DIR"
+    return 1
+  fi
+
+  local env_list selected_env
+  env_list=("${(@f)$(ls "$ENV_DIR")}")
+  [[ $#env_list -eq 0 ]] && echo "❌ No environments found." && return 1
+
+  selected_env=$(printf "%s\n" "${env_list[@]}" | rofi -dmenu -p "Select environment:" -lines 5 -width 20)
+
+  if [[ -n "$selected_env" ]]; then
+    source "$ENV_DIR/$selected_env/bin/activate"
+    echo "✅ Activated: $selected_env"
+    export CURRENT_ENV="$selected_env"
+  else
+    echo "⚠️ No environment selected."
+  fi
+}
+
+dv() {
+  if [[ -n "$CURRENT_ENV" ]]; then
+    deactivate
+    echo "🛑 Deactivated: $CURRENT_ENV"
+    unset CURRENT_ENV
+  else
+    echo "❌ No environment is currently active."
+  fi
+}
+
+cenv() {
+  local new_env
+  new_env=$(rofi -dmenu -p "Enter new environment name:" -lines 0 -width 20)
+
+  if [[ -z "$new_env" ]]; then
+    echo "❌ No name entered."
+    return 1
+  fi
+
+  mkdir -p "$ENV_DIR"
+
+  if [[ -d "$ENV_DIR/$new_env" ]]; then
+    echo "⚠️ '$new_env' already exists."
+    return 1
+  fi
+
+  python3 -m venv "$ENV_DIR/$new_env"
+  echo "✅ Created: $new_env"
+}
+
+denv() {
+  if [[ ! -d "$ENV_DIR" ]]; then
+    echo "❌ No environment directory."
+    return 1
+  fi
+
+  local env_list selected_env
+  env_list=("${(@f)$(ls "$ENV_DIR")}")
+  [[ $#env_list -eq 0 ]] && echo "❌ No environments to delete." && return 1
+
+  selected_env=$(printf "%s\n" "${env_list[@]}" | rofi -dmenu -p "Select environment to delete:" -lines 5 -width 20)
+  [[ -z "$selected_env" ]] && echo "⚠️ No selection made." && return
+
+  local confirm
+  confirm=$(echo -e "Yes\nNo" | rofi -dmenu -p "Delete $selected_env?")
+  [[ "$confirm" == "Yes" ]] && rm -rf "$ENV_DIR/$selected_env" && echo "🗑️ Deleted: $selected_env" || echo "❎ Cancelled."
+}

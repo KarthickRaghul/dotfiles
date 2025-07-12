@@ -1,0 +1,29 @@
+# ------ application -------
+alias x="exit"
+alias cls="clear"
+alias bye="shutdown now"
+alias v="nvim"
+alias ff="fastfetch --kitty-direct ~/.config/fastfetch/eren.png"
+alias tm="btop"
+alias fm="yazi"
+alias gm="nvtop"
+
+# ------ network -------
+alias nm="nmtui"
+alias bm="blendr"
+alias boff="bluetoothctl power off"
+alias bon="bluetoothctl power on"
+alias woff="nmcli radio wifi off"
+alias won="nmcli radio wifi on"
+
+# ------ miscellaneous -------
+alias iruka="ping 8.8.8.8"
+alias st="speedtest-cli"
+alias ll="ls -al"
+alias ls="lsd"
+
+# ------ zsh -------
+alias ez="nvim ~/.zshrc"
+alias ea="nvim ~/.zsh_alias"
+alias ef="nvim ~/.zsh_functions"
+alias sb="source ~/.zshrc"

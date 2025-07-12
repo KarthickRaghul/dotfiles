@@ -1,0 +1,85 @@
+# ~/.zshrc
+
+# ------------------- Shell History Setup -------------------
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
+# ------------------- Autocompletion -------------------
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/karthi/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# Optional: Completion appearance tweaks
+zstyle ':completion:*' menu select
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+
+# ------------------- Prompt (Starship) -------------------
+
+eval "$(starship init zsh)"
+
+# ------------------- Plugins (Manual Setup) -------------------
+
+# Autosuggestions
+if [[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Syntax highlighting
+if [[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+# ------------------- Aliases -------------------
+
+alias grep='grep --color=auto'
+
+# ------------------- Paths & Environment -------------------
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Node (NVM)
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+
+# System binaries
+export PATH="$PATH:/sbin"
+
+# Editor
+export EDITOR=nvim
+
+# Android SDK
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+
+# Python (pyenv)
+if command -v pyenv &>/dev/null; then
+  eval "$(pyenv init --path)"
+fi
+
+
+# Go
+export PATH="$PATH:$(go env GOPATH)/bin"
+
+# ------------------- Zsh Options -------------------
+
+setopt autocd             # cd just by typing folder name
+setopt correct            # autocorrect minor typos
+setopt histignoredups     # avoid duplicate history
+setopt share_history      # shared history across terminals
+
+# ------------------- Custom Scripts -------------------
+
+[[ -f ~/.zsh_functions ]] && source ~/.zsh_functions
+[[ -f ~/.zsh_alias ]] && source ~/.zsh_alias
+
+# ------------------- End -------------------
