@@ -1,7 +1,8 @@
-# -------- PYTHON ENVIRONMENT MANAGEMENT --------
+# -------- PYTHON ENVIRONMENT MANAGEMENT (WOFI) --------
 
 ENV_DIR="$HOME/env"
 
+# Function to list environments and activate selected one
 av() {
   if [[ ! -d "$ENV_DIR" ]]; then
     echo "❌ No environment directory found in $ENV_DIR"
@@ -12,8 +13,7 @@ av() {
   env_list=("${(@f)$(ls "$ENV_DIR")}")
   [[ $#env_list -eq 0 ]] && echo "❌ No environments found." && return 1
 
-  selected_env=$(printf "%s\n" "${env_list[@]}" | rofi -dmenu -p "Select environment:" -lines 5 -width 20)
-
+  selected_env=$(printf "%s\n" "${env_list[@]}" | wofi --dmenu --prompt "Select environment:")
   if [[ -n "$selected_env" ]]; then
     source "$ENV_DIR/$selected_env/bin/activate"
     echo "✅ Activated: $selected_env"
@@ -23,6 +23,7 @@ av() {
   fi
 }
 
+# Function to deactivate the current environment
 dv() {
   if [[ -n "$CURRENT_ENV" ]]; then
     deactivate
@@ -33,10 +34,10 @@ dv() {
   fi
 }
 
+# Function to create a new environment
 cenv() {
   local new_env
-  new_env=$(rofi -dmenu -p "Enter new environment name:" -lines 0 -width 20)
-
+  new_env=$(wofi --dmenu --prompt "Enter new environment name:")
   if [[ -z "$new_env" ]]; then
     echo "❌ No name entered."
     return 1
@@ -53,20 +54,89 @@ cenv() {
   echo "✅ Created: $new_env"
 }
 
+# Function to delete an environment
 denv() {
   if [[ ! -d "$ENV_DIR" ]]; then
     echo "❌ No environment directory."
     return 1
   fi
 
-  local env_list selected_env
+  local env_list selected_env confirm
   env_list=("${(@f)$(ls "$ENV_DIR")}")
   [[ $#env_list -eq 0 ]] && echo "❌ No environments to delete." && return 1
 
-  selected_env=$(printf "%s\n" "${env_list[@]}" | rofi -dmenu -p "Select environment to delete:" -lines 5 -width 20)
+  selected_env=$(printf "%s\n" "${env_list[@]}" | wofi --dmenu --prompt "Select environment to delete:")
   [[ -z "$selected_env" ]] && echo "⚠️ No selection made." && return
 
-  local confirm
-  confirm=$(echo -e "Yes\nNo" | rofi -dmenu -p "Delete $selected_env?")
+  confirm=$(echo -e "Yes\nNo" | wofi --dmenu --prompt "Delete $selected_env?")
   [[ "$confirm" == "Yes" ]] && rm -rf "$ENV_DIR/$selected_env" && echo "🗑️ Deleted: $selected_env" || echo "❎ Cancelled."
+}
+
+#--------------------------------------------Function for hotspot----------------------------------
+# Hotspot config (persistent across shells)
+HOTSPOT_SSID="karthickraghul"
+HOTSPOT_PASS="karthi123"
+HOTSPOT_IFACE="wlan0"
+
+hotspot() {
+  local BAND="bg"  # Default to 2.4GHz
+  local CONFIG_FILE="$HOME/.hotspot_config"
+
+  # Load config if exists
+  if [[ -f $CONFIG_FILE ]]; then
+    source "$CONFIG_FILE"
+  fi
+
+  case "$1" in
+    -h|--help)
+      echo "Usage: hotspot [-on|-off|-5|-2.4|-show-pass|-edit-pass <newpass>|-edit-if <interface>]"
+      ;;
+    -on)
+      shift
+      while [[ $# -gt 0 ]]; do
+        case "$1" in
+          -5) BAND="a"; shift ;;
+          -2.4) BAND="bg"; shift ;;
+          *) echo "Unknown band option: $1"; return 1 ;;
+        esac
+      done
+      echo "📡 Starting hotspot '$HOTSPOT_SSID' on $HOTSPOT_IFACE ($BAND GHz)..."
+      nmcli dev wifi hotspot ifname "$HOTSPOT_IFACE" ssid "$HOTSPOT_SSID" password "$HOTSPOT_PASS" band "$BAND"
+      echo "✅ Hotspot '$HOTSPOT_SSID' is ON 🚀"
+      ;;
+    -off)
+      echo "🛑 Stopping hotspot..."
+      nmcli connection down Hotspot
+      ;;
+    -show-pass)
+      echo "🔐 SSID: $HOTSPOT_SSID"
+      echo "🔑 Password: $HOTSPOT_PASS"
+      echo "🧭 Interface: $HOTSPOT_IFACE"
+      ;;
+    -edit-pass)
+      if [[ -z "$2" ]]; then
+        echo "❌ Please provide a new password"
+        return 1
+      fi
+      HOTSPOT_PASS="$2"
+      echo "HOTSPOT_PASS=\"$HOTSPOT_PASS\"" > "$CONFIG_FILE"
+      echo "HOTSPOT_SSID=\"$HOTSPOT_SSID\"" >> "$CONFIG_FILE"
+      echo "HOTSPOT_IFACE=\"$HOTSPOT_IFACE\"" >> "$CONFIG_FILE"
+      echo "✅ Password updated"
+      ;;
+    -edit-if)
+      if [[ -z "$2" ]]; then
+        echo "❌ Please provide a new interface (e.g., wlan0)"
+        return 1
+      fi
+      HOTSPOT_IFACE="$2"
+      echo "HOTSPOT_PASS=\"$HOTSPOT_PASS\"" > "$CONFIG_FILE"
+      echo "HOTSPOT_SSID=\"$HOTSPOT_SSID\"" >> "$CONFIG_FILE"
+      echo "HOTSPOT_IFACE=\"$HOTSPOT_IFACE\"" >> "$CONFIG_FILE"
+      echo "✅ Interface updated to $HOTSPOT_IFACE"
+      ;;
+    *)
+      echo "❌ Invalid option. Use -h for help."
+      ;;
+  esac
 }
