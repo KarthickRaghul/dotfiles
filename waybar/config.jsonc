@@ -1,60 +1,87 @@
 {
   "layer": "top",
   "position": "top",
-  "modules-left": ["pulseaudio", "memory", "temperature", "cpu"],
+  "modules-left": ["pulseaudio", "memory", "temperature", "cpu", "custom/notifications"],
   "modules-center": ["clock"],
-  "modules-right": ["custom/ip", "battery","bluetooth", "custom/power"],
+  "modules-right": ["custom/ip", "battery", "custom/clipboard", "bluetooth", "custom/power"],
 
-	"clock": {
-	  "format": "{:%I:%M %p}",
-	  "tooltip-format": "{:%Y-%m-%d %I:%M:%S %p}",
-    	"on-click": "kcmshell5 kcm_clock"
-	},
+  "clock": {
+    "format": "<span foreground='#F0C674'></span> {:%I:%M %p}",
+    "tooltip-format": "<span foreground='#F0C674'>{:%Y-%m-%d %I:%M:%S %p}</span>",
+    "on-click": "plasmawindowed org.kde.plasma.calendar"
+  },
+
   "pulseaudio": {
     "format": "<span foreground='#F0C674'>{icon}</span> {volume}%",
     "format-muted": "<span foreground='#F0C674'></span> Muted",
-    "on-click": "pavucontrol",
+    "on-click": "plasmawindowed org.kde.plasma.volume",
     "format-icons": {
       "default": ["", ""],
       "muted": ""
     }
   },
+
   "memory": {
     "format": "<span foreground='#F0C674'></span> {used:0.1f}G"
   },
+
   "temperature": {
     "format": "<span foreground='#F0C674'></span> {temperatureC}°C"
   },
+
   "cpu": {
     "format": "<span foreground='#F0C674'></span> {usage}%"
   },
+
   "network": {
-    "format-wifi": "<span foreground='#F0C674'></span> 192.1.13.134",
-    "format-ethernet": "<span foreground='#7e6b47'></span> 192.1.13.134",
-    "format-disconnected": "⚠️ Disconnected",
+    "format-wifi": "<span foreground='#F0C674'></span> {ipaddr}",
+    "format-ethernet": "<span foreground='#F0C674'></span> {ipaddr}",
+    "format-disconnected": "<span foreground='#F0C674'>⚠️ Disconnected</span>",
     "tooltip": true,
     "on-click": "plasmawindowed org.kde.plasma.networkmanagement"
   },
+
   "bluetooth": {
     "format": "<span foreground='#F0C674'></span> {status}",
     "on-click": "blueman-manager"
   },
-"custom/ip": {
-  "exec": "~/.config/waybar/scripts/show-ip.sh",
-  "interval": 5,
-  "return-type": "text",
-  "tooltip": false,
-  "on-click": "plasmawindowed org.kde.plasma.networkmanagement"
-},
 
+  "custom/ip": {
+    "exec": "~/.config/waybar/scripts/show-ip.sh",
+    "interval": 5,
+    "return-type": "text",
+    "tooltip": false,
+    "on-click": "plasmawindowed org.kde.plasma.networkmanagement"
+  },
+
+  "custom/clipboard": {
+    "format": "<span foreground='#F0C674'>📋</span>",
+    "on-click": "plasmawindowed org.kde.plasma.clipboard",
+    "tooltip": "Clipboard Manager"
+  },
+
+  "custom/brightness": {
+    "format": "<span foreground='#F0C674'>💡</span>",
+    "on-click": "plasmawindowed org.kde.plasma.brightness",
+    "tooltip": "Brightness Settings"
+  },
+  
   "battery": {
     "format": "<span foreground='#F0C674'>{icon}</span> {capacity}%",
+    "on-click": "plasmawindowed org.kde.plasma.battery",
     "format-icons": ["", "", "", "", ""]
   },
-"custom/power": {
-  "exec": "echo '<span foreground=\"#F0C674\">⏻</span>'",
-  "return-type": "text",
-  "tooltip": "Power Menu",
-  "on-click": "~/.config/waybar/scripts/power-button.sh"
-}
+
+  "custom/notifications": {
+    "format": "<span foreground='#F0C674'>🔔</span>",
+    "on-click": "plasmawindowed org.kde.kdeconnect",
+    "tooltip": "KDE Connect Notifications"
+  },
+
+  "custom/power": {
+    "exec": "echo '<span foreground=\"#F0C674\">⏻</span>'",
+    "return-type": "text",
+    "tooltip": "Power Menu",
+    "on-click": "~/.config/waybar/scripts/power-button.sh"
+  }
 }
