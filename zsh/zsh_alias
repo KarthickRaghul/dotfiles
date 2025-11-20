@@ -3,10 +3,11 @@ alias x="exit"
 alias cls="clear"
 alias bye="shutdown now"
 alias v="nvim"
-alias ff="fastfetch --kitty-direct ~/.config/fastfetch/eren.png"
+alias ff="fastfetch"
 alias tm="btop"
 alias fm="yazi"
 alias gm="nvtop"
+alias icat="kitten icat"
 
 # ------ network -------
 alias nm="nmtui"
@@ -15,15 +16,19 @@ alias boff="bluetoothctl power off"
 alias bon="bluetoothctl power on"
 alias woff="nmcli radio wifi off"
 alias won="nmcli radio wifi on"
+alias ho="nmcli dev wifi hotspot ifname wlan0 ssid karthickraghul password karthi123"
 
 # ------ miscellaneous -------
 alias iruka="ping 8.8.8.8"
 alias st="speedtest-cli"
 alias ll="ls -al"
 alias ls="lsd"
+alias la="ls -a"
+alias v="nvim"
+alias pc="sudo pacman"
 
 # ------ zsh -------
 alias ez="nvim ~/.zshrc"
 alias ea="nvim ~/.zsh_alias"
 alias ef="nvim ~/.zsh_functions"
-alias sb="source ~/.zshrc"
+alias sz="source ~/.zshrc"
