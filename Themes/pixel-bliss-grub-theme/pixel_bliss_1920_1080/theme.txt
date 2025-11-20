@@ -1,0 +1,70 @@
+title-text: ""
+title-color: "#dadada"
+title-font: "VT323-24.pf2"
+desktop-image: "background.png"
+terminal-font: "VT323-16.pf2"
+terminal-left: "0%"
+terminal-top: "0%"
+terminal-width: "100%"
+terminal-height: "100%"
+
++ label {
+    left = 5%
+    top = 5%
+    height = 50
+    width = 10%
+    font = "VT323-36.pf2"
+    color = "#E0E0E0"
+    align = "left"
+    text = "L O A D I N G"
+}
+
++ label {
+    left = 18%
+    top = 70
+    height = 50
+    width = 10%
+    font = "VT323-24.pf2"
+    color = "#dadada"
+    align = "left"
+    text = "- BOOTING SYSTEM . . ."
+}
+
++ boot_menu {
+    left = 20%
+    width = 50%
+    top = 25%
+    height = 90%
+    item_font = "VT323 Regular 48"
+    item_color = "#5346B6"
+    selected_item_bg = "#FFFFFF20"
+    selected_item_font = "VT323 Regular 50"
+    selected_item_color = "#ff79c6ff"
+    item_height = 80
+    item_padding = 2
+    item_spacing = 15
+}
+
++ label {
+    left = 3%
+    top = 96%
+    height = 25
+    width = 600  
+    font = "VT323-18.pf2"
+    color = "#dadada"
+    align = "left"  
+    text = "@KEYMAP_SHORT@"
+}
+
++ progress_bar {
+    id = "__timeout__"
+    left = 0%
+    width = 100%
+    top = 100%
+    height = 20
+    text = "%d seconds left"
+    text_color = "#FFFFFF"
+    font = "VT323-18.pf2"
+    bg_color = "#2c185d"
+    fg_color = "#f18ccf"
+}

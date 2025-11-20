@@ -68,6 +68,7 @@
   
   "battery": {
     "format": "<span foreground='#F0C674'>{icon}</span> {capacity}%",
+    "format-charging": "<span foreground='#98C379'>{icon}</span> {capacity}%",
     "on-click": "plasmawindowed org.kde.plasma.battery",
     "format-icons": ["", "", "", "", ""]
   },
